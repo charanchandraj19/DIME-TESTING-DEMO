@@ -1,0 +1,8 @@
+from pyspark.sql.functions import avg
+from pyspark.sql.types import NumericType, DoubleType, FloatType
+ 
+def average_values(df):
+    cols = [f.name for f in df.schema if isinstance(f.dataType, NumericType, DoubleType, FloatType)]
+    if not cols:
+        return {}
+    return df.select([avg(c).alias(c) for c in cols]).first().asDict()
